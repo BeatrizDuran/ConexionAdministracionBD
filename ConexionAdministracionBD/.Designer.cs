@@ -1,6 +1,6 @@
 ﻿namespace ConexionAdministracionBD
 {
-    partial class frmPostgres
+    partial class frmMySql
     {
         /// <summary>
         /// Required designer variable.
@@ -28,32 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tvPOSTGRES = new System.Windows.Forms.TreeView();
+            this.tvMysql = new System.Windows.Forms.TreeView();
             this.SuspendLayout();
             // 
-            // tvPOSTGRES
+            // tvMysql
             // 
-            this.tvPOSTGRES.Location = new System.Drawing.Point(0, 0);
-            this.tvPOSTGRES.Name = "tvPOSTGRES";
-            this.tvPOSTGRES.Size = new System.Drawing.Size(257, 333);
-            this.tvPOSTGRES.TabIndex = 0;
-            this.tvPOSTGRES.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvPOSTGRES_AfterSelect);
+            this.tvMysql.Location = new System.Drawing.Point(-1, 0);
+            this.tvMysql.Name = "tvMysql";
+            this.tvMysql.Size = new System.Drawing.Size(307, 340);
+            this.tvMysql.TabIndex = 3;
+            this.tvMysql.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvBASEDATOS_AfterSelect);
             // 
-            // frmPostgres
+            // frmMySql
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(519, 394);
-            this.Controls.Add(this.tvPOSTGRES);
-            this.Name = "frmPostgres";
-            this.Text = "frmPostgres";
-            this.Load += new System.EventHandler(this.frmPostgres_Load);
+            this.ClientSize = new System.Drawing.Size(318, 338);
+            this.Controls.Add(this.tvMysql);
+            this.Name = "frmMySql";
+            this.Text = "Base de datos";
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TreeView tvPOSTGRES;
+        private System.Windows.Forms.TreeView tvMysql;
     }
 }

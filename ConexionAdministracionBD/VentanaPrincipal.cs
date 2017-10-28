@@ -19,9 +19,9 @@ namespace ConexionAdministracionBD
             InitializeComponent();
         }
 
-        static public void SNF(TreeView lista)
+        static public void SNF(TreeView tree)
         {
-            Base_de_datos childForm = new Base_de_datos(lista);
+            frmMySql childForm = new frmMySql(tree);
             childForm.MdiParent = Application.OpenForms[0];
             childForm.Text = "Base de datos ";
             childForm.Height = Application.OpenForms[0].Height - 
@@ -30,7 +30,17 @@ namespace ConexionAdministracionBD
                 Application.OpenForms[0].Controls[2].Height -50;  
             childForm.Show();
         }
-       
+        static public void SNF1(TreeView tree)
+        {
+           frmPostgres childForm = new frmPostgres(tree);
+            childForm.MdiParent = Application.OpenForms[0];
+            childForm.Text = "Base de datos ";
+            childForm.Height = Application.OpenForms[0].Height -
+                Application.OpenForms[0].Controls[0].Height -
+                Application.OpenForms[0].Controls[1].Height -
+                Application.OpenForms[0].Controls[2].Height - 50;
+            childForm.Show();
+        }
         private void ShowNewForm(object sender,EventArgs e)
         {
             new AdminSesiones().ShowDialog();

@@ -219,7 +219,6 @@
             this.txtARCHIVO.Name = "txtARCHIVO";
             this.txtARCHIVO.Size = new System.Drawing.Size(217, 26);
             this.txtARCHIVO.TabIndex = 18;
-            this.txtARCHIVO.UseSystemPasswordChar = true;
             // 
             // AdminSesiones
             // 

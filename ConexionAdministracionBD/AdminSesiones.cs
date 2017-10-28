@@ -15,11 +15,13 @@ using MongoDB.Driver.Core;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using MongoDB.Bson;
+using Raven.Client.Document;
 
 namespace ConexionAdministracionBD
 {
     public partial class AdminSesiones : Form
     {
+        public static NpgsqlConnection npgsqlConnection;
         public static MySqlConnection con;
         public static MySqlCommand comd;
         public string cadena;
@@ -67,6 +69,21 @@ namespace ConexionAdministracionBD
             txtARCHIVO.Visible = false;
             btnBROWSER.Visible = false;
         }
+        private void lblBtn()
+        {
+            txtARCHIVO.Visible = false;
+            lblARCHIVO.Visible = false;
+            txtPASSWORD.Visible = false;
+            lblPASSWORD.Visible = false;
+            txtROOT.Visible = false;
+            lblUSUARIO.Visible = false;
+            cmbPRUEBA.Visible = true;
+            lblBASEDATOS.Visible = true;
+            lblPUERTO.Visible = true;
+            duPUERTO.Visible = true;
+            btnBROWSER.Visible = false;
+
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             comboBox1.Text = comboBox1.Items[0].ToString();
@@ -112,8 +129,10 @@ namespace ConexionAdministracionBD
                     duPUERTO.Text = "27017";
                     break;
                 case "5":
+                    //...Conectar con RavenDB......................
                     txtHOST.Text = "127.0.0.1";
-                    txtPASSWORD.Clear();
+                    duPUERTO.Text = "8088";
+                    lblBtn();
                     break;
             }
         }
@@ -189,7 +208,7 @@ namespace ConexionAdministracionBD
                     break;
                 //........................................POSTGRES.........................................
                 case "1":
-                    if (txtPASSWORD.Text.Trim() == "" || txtROOT.Text.Trim() == "") //check password and user
+                    if (txtPASSWORD.Text.Trim() == "" || txtROOT.Text.Trim() == "" || duPUERTO.Text.Trim()=="") //check password and user
                     {
                         MessageBox.Show("Hay campos vacios", "Verificación", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -198,26 +217,25 @@ namespace ConexionAdministracionBD
                         if (cmbPRUEBA.Text == "")
                         {
                             cadena = "Server=" + txtHOST.Text + "; Port=" + duPUERTO.Text + "; User id= " + txtROOT.Text + "; Password= " + txtPASSWORD.Text + "; Database= " + cmbPRUEBA.Text;
-                            NpgsqlConnection con3 = new NpgsqlConnection(cadena);
+                            npgsqlConnection = new NpgsqlConnection(cadena);
                             try
                             {
-                                string q = "SELECT datname FROM pg_database WHERE datistemplate= false;";
-                                NpgsqlCommand com3 = new NpgsqlCommand(q, con3);
-                                con3.Open();
+                                string q = "SELECT datname FROM pg_database WHERE datistemplate=false;";
+                                NpgsqlCommand com3 = new NpgsqlCommand(q, npgsqlConnection);
+                                npgsqlConnection.Open();
                                 com3.ExecuteNonQuery();
                                 NpgsqlDataReader lector3 = com3.ExecuteReader();
-                                TreeView view3 = new TreeView();
+                                TreeView view4 = new TreeView();
                                 while (lector3.Read())
                                 {
-                                    view3.Nodes.Add(lector3.GetValue(0).ToString());
+                                    view4.Nodes.Add(lector3.GetValue(0).ToString());
                                 }
                                 lector3.Close();
-                                //string q1 = "SELECT tablename FROM pg_tables WHERE schemaname ='public'";//mostrar tablas
-                                
-                                VentanaPrincipal.SNF(view3);
+                                npgsqlConnection.Close();
+                                VentanaPrincipal.SNF1(view4);
                                 this.Close();
                             }
-                            catch (MySqlException error)
+                            catch (NpgsqlException error)
                             {
                                 MessageBox.Show(error.ToString());
                             }
@@ -225,12 +243,12 @@ namespace ConexionAdministracionBD
                         else
                         {
                             cadena = "Server=" + txtHOST.Text + "; Port=" + duPUERTO.Text + "; User id= " + txtROOT.Text + "; Password= " + txtPASSWORD.Text + "; Database= '" + cmbPRUEBA.Text + "';";
-                            NpgsqlConnection con2 = new NpgsqlConnection(cadena);
+                            npgsqlConnection = new NpgsqlConnection(cadena);
                             try
                             {
                                 string q = "SELECT datname FROM pg_database WHERE datname = '" + cmbPRUEBA.Text + "';";
-                                NpgsqlCommand com = new NpgsqlCommand(q, con2);
-                                con2.Open();
+                                NpgsqlCommand com = new NpgsqlCommand(q, npgsqlConnection);
+                                npgsqlConnection.Open();
                                 com.ExecuteNonQuery();
                                 NpgsqlDataReader lector = com.ExecuteReader();
                                 TreeView view = new TreeView();
@@ -239,9 +257,8 @@ namespace ConexionAdministracionBD
                                     view.Nodes.Add(lector.GetValue(0).ToString());
                                 }
                                 lector.Close();
-                               // string q1 = "SELECT tablename FROM pg_tables WHERE schemaname ='public'"; //mostrar tablas
-                               
-                                VentanaPrincipal.SNF(view);
+                                npgsqlConnection.Close();
+                                VentanaPrincipal.SNF1(view);
                                 this.Close();
 
                             }
@@ -318,13 +335,13 @@ namespace ConexionAdministracionBD
                     break;
                 case "3":
                     //...............................CONECTAR SQLITE.......................
-                    if (cmbPRUEBA.Text.Trim() == "")
+                    if (txtARCHIVO.Text.Trim() == "")
                         MessageBox.Show("Hay un campo vacio","Error", MessageBoxButtons.OKCancel,MessageBoxIcon.Error);
                     else
                     {
                         try
                         {
-                            SQLiteConnection sqliteCON = new SQLiteConnection("Data Source = " + cmbPRUEBA.Text);
+                            SQLiteConnection sqliteCON = new SQLiteConnection("Data Source = " + txtARCHIVO.Text);
                             sqliteCON.Open();
                             MessageBox.Show("Conectado a base de datos");
                             sqliteCON.Close();
@@ -359,7 +376,14 @@ namespace ConexionAdministracionBD
                     {
                         MessageBox.Show(error.ToString());
                     }
-                    break;        
+                    break;
+                case "5":
+                    //.............................RAVENDB.......................................
+                    var documentStore = new Raven.Client.Document.DocumentStore { Url = "http://localhost:8088" };
+                    documentStore.Initialize();
+                    
+                    using (var session = documentStore.OpenSession()) { }
+                    break;
             }    
             }
         private void button1_Click(object sender, EventArgs e)
@@ -368,7 +392,7 @@ namespace ConexionAdministracionBD
             open.Filter = "Database (*.db)|*.db";
             if (open.ShowDialog()==DialogResult.OK)
             {
-                cmbPRUEBA.Text = open.FileName;
+                txtARCHIVO.Text = open.FileName;
             }
         }
         /// <summary>
@@ -387,7 +411,7 @@ namespace ConexionAdministracionBD
                     {
                         if (txtHOST.Text.Trim() == "" || txtROOT.Text.Trim() == "" || txtPASSWORD.Text.Trim() == "")
                         {
-                            MessageBox.Show("Es necesario llenar los campos");
+                            MessageBox.Show("Verifique los campos de la contraseña, el usuario o el localhost","Aviso",MessageBoxButtons.OK,MessageBoxIcon.Error);
                         }
                         else
                         {
@@ -422,7 +446,7 @@ namespace ConexionAdministracionBD
                     {
                         if (txtHOST.Text.Trim() == "" || txtROOT.Text.Trim() == "" || txtPASSWORD.Text.Trim() == "")
                         {
-                            MessageBox.Show("Es necesario llenar los campos");
+                            MessageBox.Show("Verifique los campos del host, contraseña o usuario","Aviso",MessageBoxButtons.OK,MessageBoxIcon.Error);
                         }
                         else
                         {
@@ -430,7 +454,7 @@ namespace ConexionAdministracionBD
                             if (cmbPRUEBA.Text == "")
                             {
                                 NpgsqlConnection con1 = new NpgsqlConnection(ca);
-                                string query1 = "SELECT datname FROM pg_database WHERE datistemplate= false;";// LIKE'"+txtBASEDEDATOS.Text+"'";
+                                string query1 = "SELECT datname FROM pg_database WHERE datistemplate= false;";
                                 NpgsqlCommand ncm1 = new NpgsqlCommand(query1, con1);
                                 con1.Open();
                                 ncm1.ExecuteNonQuery();
@@ -486,13 +510,13 @@ namespace ConexionAdministracionBD
                     break;
                 //...............................SQLITE............................
                 case "3":
-                    if (cmbPRUEBA.Text.Trim() == "")
+                    if (txtARCHIVO.Text.Trim() == "")
                         MessageBox.Show("Hay un campo vacio", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
                     else
                     {
                         try
                         {
-                            SQLiteConnection sqliteCON = new SQLiteConnection("Data Source = " + cmbPRUEBA.Text);
+                            SQLiteConnection sqliteCON = new SQLiteConnection("Data Source = " + txtARCHIVO.Text);
                             sqliteCON.Open();
                             MessageBox.Show("Conectado a base de datos");
                             sqliteCON.Close();
@@ -512,12 +536,30 @@ namespace ConexionAdministracionBD
                     mongo.GetDatabase(cmbPRUEBA.Text);
                     if (mongo.Cluster.Description.State.ToString() == "Disconnected")
                     {
-                        MessageBox.Show("Error al conectar");
+                        MessageBox.Show("Exito al conectar");
                     }
                     else
                     {
-                        MessageBox.Show("Exito al conectar!");
+                        MessageBox.Show("Error al conectar!");
                     }
+                    break;
+                case "5":
+                    //..................................RavenDB.........................
+                    try
+                    {
+                        var documentStore = new DocumentStore { Url = "http://" + txtHOST.Text + ":" + duPUERTO.Text + "" };
+                        documentStore.Initialize();
+
+                        using (var session = documentStore.OpenSession())
+                        {
+                            
+                        }
+                    }
+                    catch (Exception error)
+                    {
+                        MessageBox.Show(error.ToString());
+                    }
+                    
                     break;
             }
             }
