@@ -22,15 +22,17 @@ namespace ConexionAdministracionBD
     public partial class AdminSesiones : Form
     {
         public static NpgsqlConnection npgsqlConnection;
+        public static SqlConnection sqlcon;
         public static MySqlConnection con;
         public static MySqlCommand comd;
-        public string cadena;
+        public static SQLiteConnection sqlitecon;
         public AdminSesiones()
         {
             InitializeComponent();
         }
         public static IMongoClient mongo;
         public static IMongoDatabase db ;
+        TreeView view = new TreeView();
         /// <summary>
         /// Botones con la propiedad enabled false
         /// </summary>           
@@ -109,7 +111,7 @@ namespace ConexionAdministracionBD
                     break;
                 case "2"://SQLSERVER......................
                     botonesTRUE();
-                    txtHOST.Text = "BEATRIZDURAN-PC";
+                    txtHOST.Text = "BEATRIZDURAN-PC\\SQLEXPRESS";
                     txtROOT.Text = "sa";
                     txtPASSWORD.Clear();
                     duPUERTO.Text = "1433";             
@@ -150,8 +152,8 @@ namespace ConexionAdministracionBD
                     {
                         if (cmbPRUEBA.Text.Trim() == "")
                         {
-                            cadena = "Server = " + txtHOST.Text + "; Port =" + duPUERTO.Text + "; username = " + txtROOT.Text + "; password = " + txtPASSWORD.Text + ";";
-                            con = new MySqlConnection(cadena);
+                            string cadena1 = "Server = " + txtHOST.Text + "; Port =" + duPUERTO.Text + "; username = " + txtROOT.Text + "; password = " + txtPASSWORD.Text + ";";
+                            con = new MySqlConnection(cadena1);
                             try
                             {
                                 string query = "SHOW DATABASES";
@@ -160,7 +162,6 @@ namespace ConexionAdministracionBD
                                 comd.Connection = con;
                                 comd.ExecuteNonQuery();
                                 MySqlDataReader lector = comd.ExecuteReader();
-                                TreeView view = new TreeView();
                                 while (lector.Read())
                                 {
                                     view.Nodes.Add(lector.GetValue(0).ToString());
@@ -178,11 +179,10 @@ namespace ConexionAdministracionBD
                         else
                         {
 
-                            cadena = "Server = " + txtHOST.Text + "; Port =" + duPUERTO.Text + "; username = " + txtROOT.Text + "; password = " + txtPASSWORD.Text + "; database = " + cmbPRUEBA.Text + ";";
-                            con = new MySqlConnection(cadena);
+                            string cadena2 = "Server = " + txtHOST.Text + "; Port =" + duPUERTO.Text + "; username = " + txtROOT.Text + "; password = " + txtPASSWORD.Text + "; database = " + cmbPRUEBA.Text + ";";
+                            con = new MySqlConnection(cadena2);
                             try
                             {
-                                TreeView view = new TreeView();
                                 view.Nodes.Add(cmbPRUEBA.Text);
                                 con.Open();
                                 string QUERY = "SHOW DATABASES LIKE '" + cmbPRUEBA.Text + "';";
@@ -216,8 +216,8 @@ namespace ConexionAdministracionBD
                     {
                         if (cmbPRUEBA.Text == "")
                         {
-                            cadena = "Server=" + txtHOST.Text + "; Port=" + duPUERTO.Text + "; User id= " + txtROOT.Text + "; Password= " + txtPASSWORD.Text + "; Database= " + cmbPRUEBA.Text;
-                            npgsqlConnection = new NpgsqlConnection(cadena);
+                            string cadena3 = "Server=" + txtHOST.Text + "; Port=" + duPUERTO.Text + "; User id= " + txtROOT.Text + "; Password= " + txtPASSWORD.Text + "; Database= " + cmbPRUEBA.Text;
+                            npgsqlConnection = new NpgsqlConnection(cadena3);
                             try
                             {
                                 string q = "SELECT datname FROM pg_database WHERE datistemplate=false;";
@@ -242,8 +242,8 @@ namespace ConexionAdministracionBD
                         }
                         else
                         {
-                            cadena = "Server=" + txtHOST.Text + "; Port=" + duPUERTO.Text + "; User id= " + txtROOT.Text + "; Password= " + txtPASSWORD.Text + "; Database= '" + cmbPRUEBA.Text + "';";
-                            npgsqlConnection = new NpgsqlConnection(cadena);
+                            string cadena4 = "Server=" + txtHOST.Text + "; Port=" + duPUERTO.Text + "; User id= " + txtROOT.Text + "; Password= " + txtPASSWORD.Text + "; Database= '" + cmbPRUEBA.Text + "';";
+                            npgsqlConnection = new NpgsqlConnection(cadena4);
                             try
                             {
                                 string q = "SELECT datname FROM pg_database WHERE datname = '" + cmbPRUEBA.Text + "';";
@@ -279,24 +279,22 @@ namespace ConexionAdministracionBD
                     {
                         if (cmbPRUEBA.Text == "")
                         {
-                            cadena = @"Data Source=" + txtHOST.Text + ";Integrated Security=SSPI;Initial Catalog=" + cmbPRUEBA.Text + ";";
-                            SqlConnection conn = new SqlConnection(cadena);
+                            string cadena5 = @"Data Source=" + txtHOST.Text + ";Integrated Security=SSPI;Initial Catalog=" + cmbPRUEBA.Text + ";";
+                            sqlcon = new SqlConnection(cadena5);
                             try
                             {
                                 string l = "SELECT name FROM master.dbo.sysdatabases";
-                                SqlCommand com = new SqlCommand(l, conn);
-                                conn.Open();
+                                SqlCommand com = new SqlCommand(l, sqlcon);
+                                sqlcon.Open();
                                 com.ExecuteNonQuery();
                                 SqlDataReader lector = com.ExecuteReader();
-                                DataGridView view = new DataGridView();
-                                view.Columns.Add("Column1", "Column2");
                                 while (lector.Read())
                                 {
-                                    view.Rows.Add(lector.GetValue(0).ToString());
+                                    view.Nodes.Add(lector.GetValue(0).ToString());
                                 }
                                 lector.Close();
-                                // MessageBox.Show("Conexión exitosa");
-                                // VentanaPrincipal.SNF(view);
+                                sqlcon.Close();
+                                VentanaPrincipal.SNF2(view);
                                 this.Close();
                             }
                             catch (SqlException error)
@@ -306,24 +304,23 @@ namespace ConexionAdministracionBD
                         }
                         else
                         {
-                            cadena = @"Data Source=" + txtHOST.Text + ";Integrated Security=SSPI;Initial Catalog=" + cmbPRUEBA.Text + ";";
-                            SqlConnection conn = new SqlConnection(cadena);
+                            string cadena6 = @"Data Source=" + txtHOST.Text + ";Integrated Security=SSPI;Initial Catalog=" + cmbPRUEBA.Text + ";";
+                            sqlcon = new SqlConnection(cadena6);
                             try
                             {
                                string  k = "EXEC sp_helpdb '" + cmbPRUEBA.Text + "'";
-                                SqlCommand com1 = new SqlCommand(k, conn);
-                                conn.Open();
+                                SqlCommand com1 = new SqlCommand(k, sqlcon);
+                                sqlcon.Open();
                                 com1.ExecuteNonQuery();
                                 SqlDataReader lector1 = com1.ExecuteReader();
-                                TreeView view1 = new TreeView();
                                 while (lector1.Read())
                                 {
-                                    view1.Nodes.Add(lector1.GetValue(0).ToString());
+                                    view.Nodes.Add(lector1.GetValue(0).ToString());
                                 }
                                 lector1.Close();
                                 //string k1 = "SELECT name FROM sysobjects WHERE xtype='u'"; mostrar tablas
-                               
-                                VentanaPrincipal.SNF(view1);
+                                sqlcon.Close();
+                                VentanaPrincipal.SNF2(view);
                                 this.Close();
                             }
                             catch (MySqlException error)
@@ -336,22 +333,26 @@ namespace ConexionAdministracionBD
                 case "3":
                     //...............................CONECTAR SQLITE.......................
                     if (txtARCHIVO.Text.Trim() == "")
-                        MessageBox.Show("Hay un campo vacio","Error", MessageBoxButtons.OKCancel,MessageBoxIcon.Error);
+                    {
+                        MessageBox.Show("Hay un campo vacio", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                    }
                     else
                     {
                         try
                         {
-                            SQLiteConnection sqliteCON = new SQLiteConnection("Data Source = " + txtARCHIVO.Text);
-                            sqliteCON.Open();
+                            sqlitecon = new SQLiteConnection("Data Source = " + txtARCHIVO.Text);
+                            frmSQLite.sqlcon1 = sqlitecon;
+                            sqlitecon.Open();
+                            VentanaPrincipal.SNF3(view);
                             MessageBox.Show("Conectado a base de datos");
-                            sqliteCON.Close();
+                            sqlitecon.Close();
                         }
-                        catch (SQLiteException sqlite)
+                        catch (SQLiteException error)
                         {
-                            MessageBox.Show(""+sqlite);
+                            MessageBox.Show(error.Message);
                         }
                     }
-                        break;
+                    break;
                 case "4":
                     //......................CONEXIÓN A MONGODB........................                  
                     try
@@ -367,7 +368,7 @@ namespace ConexionAdministracionBD
                         }
                         else
                         {
-                            MessageBox.Show("Exito al conectar!");
+                            MessageBox.Show("Conexión exitosa!");
                         }
                        // db = mongo.GetDatabase("test");
                        //MessageBox.Show(mongo.ToString());
@@ -563,6 +564,11 @@ namespace ConexionAdministracionBD
                     break;
             }
             }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
     }
 

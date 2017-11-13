@@ -1,6 +1,6 @@
 ﻿namespace ConexionAdministracionBD
 {
-    partial class frmPostgres
+    partial class frmSQLSERVER
     {
         /// <summary>
         /// Required designer variable.
@@ -28,32 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tvPOSTGRES = new System.Windows.Forms.TreeView();
+            this.tvSQLSERVER = new System.Windows.Forms.TreeView();
             this.SuspendLayout();
             // 
-            // tvPOSTGRES
+            // tvSQLSERVER
             // 
-            this.tvPOSTGRES.Location = new System.Drawing.Point(2, 0);
-            this.tvPOSTGRES.Name = "tvPOSTGRES";
-            this.tvPOSTGRES.Size = new System.Drawing.Size(257, 333);
-            this.tvPOSTGRES.TabIndex = 0;
-            this.tvPOSTGRES.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvPOSTGRES_AfterSelect);
+            this.tvSQLSERVER.Location = new System.Drawing.Point(0, 0);
+            this.tvSQLSERVER.Name = "tvSQLSERVER";
+            this.tvSQLSERVER.Size = new System.Drawing.Size(214, 356);
+            this.tvSQLSERVER.TabIndex = 1;
+            this.tvSQLSERVER.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvSQLSERVER_AfterSelect);
             // 
-            // frmPostgres
+            // frmSQLSERVER
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(262, 336);
-            this.Controls.Add(this.tvPOSTGRES);
-            this.Name = "frmPostgres";
-            this.Text = "frmPostgres";
-            this.Load += new System.EventHandler(this.frmPostgres_Load);
+            this.ClientSize = new System.Drawing.Size(217, 358);
+            this.Controls.Add(this.tvSQLSERVER);
+            this.Name = "frmSQLSERVER";
+            this.Text = "Base de datos";
+            this.Load += new System.EventHandler(this.frmSQLSERVER_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TreeView tvPOSTGRES;
+        private System.Windows.Forms.TreeView tvSQLSERVER;
     }
 }

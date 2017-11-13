@@ -1,6 +1,6 @@
 ﻿namespace ConexionAdministracionBD
 {
-    partial class frmPostgres
+    partial class frmSQLite
     {
         /// <summary>
         /// Required designer variable.
@@ -28,32 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tvPOSTGRES = new System.Windows.Forms.TreeView();
+            this.tvSQLite = new System.Windows.Forms.TreeView();
             this.SuspendLayout();
             // 
-            // tvPOSTGRES
+            // tvSQLite
             // 
-            this.tvPOSTGRES.Location = new System.Drawing.Point(2, 0);
-            this.tvPOSTGRES.Name = "tvPOSTGRES";
-            this.tvPOSTGRES.Size = new System.Drawing.Size(257, 333);
-            this.tvPOSTGRES.TabIndex = 0;
-            this.tvPOSTGRES.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvPOSTGRES_AfterSelect);
+            this.tvSQLite.Location = new System.Drawing.Point(3, 2);
+            this.tvSQLite.Name = "tvSQLite";
+            this.tvSQLite.Size = new System.Drawing.Size(240, 334);
+            this.tvSQLite.TabIndex = 0;
+            this.tvSQLite.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvSQLite_AfterSelect);
             // 
-            // frmPostgres
+            // frmSQLite
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(262, 336);
-            this.Controls.Add(this.tvPOSTGRES);
-            this.Name = "frmPostgres";
-            this.Text = "frmPostgres";
-            this.Load += new System.EventHandler(this.frmPostgres_Load);
+            this.ClientSize = new System.Drawing.Size(246, 338);
+            this.Controls.Add(this.tvSQLite);
+            this.Name = "frmSQLite";
+            this.Text = "SQLite";
+            this.Load += new System.EventHandler(this.frmSQLite_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TreeView tvPOSTGRES;
+        private System.Windows.Forms.TreeView tvSQLite;
     }
 }

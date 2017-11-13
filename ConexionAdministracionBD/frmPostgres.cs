@@ -34,7 +34,8 @@ namespace ConexionAdministracionBD
             NpgsqlConnection con1 = AdminSesiones.npgsqlConnection;
             try
             {
-                string bd = "SELECT datname FROM pg_database WHERE datname = '"+ tvPOSTGRES.SelectedNode.Text + "'; SELECT tablename FROM pg_tables WHERE schemaname ='public'";
+                //Verificar la consulta para la selección de la base de datos y muestre las tablas.
+                string bd = "SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname != '"+tvPOSTGRES.SelectedNode.Text+"' AND schemaname != 'public'";
                 NpgsqlCommand comd = new NpgsqlCommand(bd, con1);//comando
                 con1.Open();
                 comd.Connection = con1;

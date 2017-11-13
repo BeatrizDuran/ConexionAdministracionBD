@@ -39,9 +39,6 @@ namespace ConexionAdministracionBD
                 comd.Connection = con1;
                 comd.ExecuteNonQuery();
                 MySqlDataReader lector = comd.ExecuteReader();
-                //dgvTABLAS.Rows.Clear();
-                //dgvTABLAS.Columns.Clear();
-                //dgvTABLAS.Columns.Add("Tablas", "Column");
                 if(tvMysql.Nodes[tvMysql.SelectedNode.Index].Nodes.Count >= 1)
                     {
                     tvMysql.Nodes[tvMysql.SelectedNode.Index].Nodes.Clear();
@@ -61,5 +58,9 @@ namespace ConexionAdministracionBD
             }
         }
 
+        private void frmMySql_Load_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -33,9 +33,9 @@
             // 
             // tvMysql
             // 
-            this.tvMysql.Location = new System.Drawing.Point(-1, 0);
+            this.tvMysql.Location = new System.Drawing.Point(0, 0);
             this.tvMysql.Name = "tvMysql";
-            this.tvMysql.Size = new System.Drawing.Size(307, 340);
+            this.tvMysql.Size = new System.Drawing.Size(195, 340);
             this.tvMysql.TabIndex = 3;
             this.tvMysql.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvBASEDATOS_AfterSelect);
             // 
@@ -43,10 +43,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(318, 338);
+            this.ClientSize = new System.Drawing.Size(196, 344);
             this.Controls.Add(this.tvMysql);
             this.Name = "frmMySql";
             this.Text = "Base de datos";
+            this.Load += new System.EventHandler(this.frmMySql_Load_1);
             this.ResumeLayout(false);
 
         }

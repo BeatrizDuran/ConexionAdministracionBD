@@ -41,6 +41,28 @@ namespace ConexionAdministracionBD
                 Application.OpenForms[0].Controls[2].Height - 50;
             childForm.Show();
         }
+        static public void SNF2(TreeView tree)
+        {
+            frmSQLSERVER childForm = new frmSQLSERVER(tree);
+            childForm.MdiParent = Application.OpenForms[0];
+            childForm.Text = "Base de datos ";
+            childForm.Height = Application.OpenForms[0].Height -
+                Application.OpenForms[0].Controls[0].Height -
+                Application.OpenForms[0].Controls[1].Height -
+                Application.OpenForms[0].Controls[2].Height - 50;
+            childForm.Show();
+        }
+        static public void SNF3(TreeView tree)
+        {
+            frmSQLite childForm = new frmSQLite(tree);
+            childForm.MdiParent = Application.OpenForms[0];
+            childForm.Text = "Base de datos ";
+            childForm.Height = Application.OpenForms[0].Height -
+                Application.OpenForms[0].Controls[0].Height -
+                Application.OpenForms[0].Controls[1].Height -
+                Application.OpenForms[0].Controls[2].Height - 50;
+            childForm.Show();
+        }
         private void ShowNewForm(object sender,EventArgs e)
         {
             new AdminSesiones().ShowDialog();
