@@ -346,6 +346,7 @@ namespace ConexionAdministracionBD
                             VentanaPrincipal.SNF3(view);
                             MessageBox.Show("Conectado a base de datos");
                             sqlitecon.Close();
+                            this.Close();
                         }
                         catch (SQLiteException error)
                         {
