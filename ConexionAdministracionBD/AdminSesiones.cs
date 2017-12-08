@@ -86,6 +86,13 @@ namespace ConexionAdministracionBD
             btnBROWSER.Visible = false;
 
         }
+        public class Site
+        { 
+            public string Title { get; set; }
+            public string URL { get; set; }
+            public string Notes { get; set; }
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             comboBox1.Text = comboBox1.Items[0].ToString();
@@ -344,7 +351,7 @@ namespace ConexionAdministracionBD
                             frmSQLite.sqlcon1 = sqlitecon;
                             sqlitecon.Open();
                             VentanaPrincipal.SNF3(view);
-                            MessageBox.Show("Conectado a base de datos");
+                            MessageBox.Show("Conexion exitosa","Aviso de conexión",MessageBoxButtons.OK,MessageBoxIcon.Information);
                             sqlitecon.Close();
                             this.Close();
                         }
@@ -381,10 +388,19 @@ namespace ConexionAdministracionBD
                     break;
                 case "5":
                     //.............................RAVENDB.......................................
-                    var documentStore = new Raven.Client.Document.DocumentStore { Url = "http://localhost:8088" };
+                    var documentStore = new DocumentStore { Url = "http://"+txtHOST.Text+":"+duPUERTO.Text+"" };
                     documentStore.Initialize();
-                    
-                    using (var session = documentStore.OpenSession()) { }
+                    var site = new Site
+                    {
+                        Title = "Base de datos",
+                        URL = "http://"+txtHOST.Text+":"+duPUERTO.Text+ "/studio/index.html#databases/upgrade?&database=Consultorio_medico",
+                        Notes = "Tech shows"
+                    };
+                    MessageBox.Show("Felizmente conectado");
+                    using (var session = documentStore.OpenSession())
+                    {
+
+                    }
                     break;
             }    
             }
@@ -512,8 +528,7 @@ namespace ConexionAdministracionBD
                     break;
                 //...............................SQLITE............................
                 case "3":
-                    if (txtARCHIVO.Text.Trim() == "")
-                        MessageBox.Show("Hay un campo vacio", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                    if (txtARCHIVO.Text.Trim() == "")  MessageBox.Show("Hay un campo vacio", "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
                     else
                     {
                         try
@@ -533,16 +548,11 @@ namespace ConexionAdministracionBD
                 case "4":
                     string cadena = "mongodb://" + txtHOST.Text + ":" + duPUERTO.Text + "";
                     mongo = new MongoClient(cadena);
-
-                    // MongoServerAddress server = new MongoServerAddress
                     mongo.GetDatabase(cmbPRUEBA.Text);
-                    if (mongo.Cluster.Description.State.ToString() == "Disconnected")
-                    {
-                        MessageBox.Show("Exito al conectar");
-                    }
+                    if (mongo.Cluster.Description.State.ToString() == "Disconnected")  MessageBox.Show("Exito al conectar","Aviso de conexión",MessageBoxButtons.OKCancel,MessageBoxIcon.Information);
                     else
                     {
-                        MessageBox.Show("Error al conectar!");
+                        MessageBox.Show("Error al conectar!","Aviso de conexión", MessageBoxButtons.OK,MessageBoxIcon.Information);
                     }
                     break;
                 case "5":
@@ -551,25 +561,18 @@ namespace ConexionAdministracionBD
                     {
                         var documentStore = new DocumentStore { Url = "http://" + txtHOST.Text + ":" + duPUERTO.Text + "" };
                         documentStore.Initialize();
-
                         using (var session = documentStore.OpenSession())
                         {
-                            
+
                         }
-                    }
-                    catch (Exception error)
+                     }catch (Raven.Client.Exceptions.ConflictException error)
                     {
                         MessageBox.Show(error.ToString());
                     }
-                    
                     break;
             }
             }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private void button1_Click_1(object sender, EventArgs e) => this.Close();
     }
     }
 

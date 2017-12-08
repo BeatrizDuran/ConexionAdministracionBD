@@ -14,11 +14,7 @@ namespace ConexionAdministracionBD
     {
         //private int childFormNumber = 0;
 
-        public VentanaPrincipal()
-        {
-            InitializeComponent();
-        }
-
+        public VentanaPrincipal() => InitializeComponent();
         static public void SNF(TreeView tree)
         {
             frmMySql childForm = new frmMySql(tree);

@@ -27,7 +27,6 @@ namespace ConexionAdministracionBD
                 tvSQLite.Nodes.Add(listaa.Nodes[j].ToString().Remove(0, 9));
             }
         }
-
         private void tvSQLite_AfterSelect(object sender, TreeViewEventArgs e)
         {
             SQLiteConnection sqlcon1 = AdminSesiones.sqlitecon;
