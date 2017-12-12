@@ -32,7 +32,8 @@ namespace ConexionAdministracionBD
         }
         public static IMongoClient mongo;
         public static IMongoDatabase db ;
-        TreeView view = new TreeView();
+       public  TreeView view = new TreeView();
+
         /// <summary>
         /// Botones con la propiedad enabled false
         /// </summary>           
@@ -92,6 +93,7 @@ namespace ConexionAdministracionBD
             public string URL { get; set; }
             public string Notes { get; set; }
         }
+       
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -136,6 +138,7 @@ namespace ConexionAdministracionBD
                     txtROOT.Text = "";
                     txtHOST.Text = "127.0.0.1";
                     duPUERTO.Text = "27017";
+                    cmbPRUEBA.Text = "prueba";
                     break;
                 case "5":
                     //...Conectar con RavenDB......................
@@ -169,6 +172,7 @@ namespace ConexionAdministracionBD
                                 comd.Connection = con;
                                 comd.ExecuteNonQuery();
                                 MySqlDataReader lector = comd.ExecuteReader();
+                           
                                 while (lector.Read())
                                 {
                                     view.Nodes.Add(lector.GetValue(0).ToString());
@@ -350,8 +354,9 @@ namespace ConexionAdministracionBD
                             sqlitecon = new SQLiteConnection("Data Source = " + txtARCHIVO.Text);
                             frmSQLite.sqlcon1 = sqlitecon;
                             sqlitecon.Open();
+                            view.Nodes.Add(txtHOST.Text);
                             VentanaPrincipal.SNF3(view);
-                            MessageBox.Show("Conexion exitosa","Aviso de conexión",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                           // MessageBox.Show("Conexion exitosa","Aviso de conexión",MessageBoxButtons.OK,MessageBoxIcon.Information);
                             sqlitecon.Close();
                             this.Close();
                         }
@@ -365,21 +370,27 @@ namespace ConexionAdministracionBD
                     //......................CONEXIÓN A MONGODB........................                  
                     try
                     {
-                        string cadena = "mongodb://"+txtHOST.Text+":" + duPUERTO.Text + "";
-                        mongo = new MongoClient(cadena);
-                       
-                      // MongoServerAddress server = new MongoServerAddress
-                        mongo.GetDatabase(cmbPRUEBA.Text);
-                        if (mongo.Cluster.Description.State.ToString() == "Disconnected")
+                        if (txtHOST.Text.Trim() == "" || duPUERTO.Text.Trim() == "")
                         {
-                            MessageBox.Show("Error al conectar");
+                            MessageBox.Show("Algún campo está vacio", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                         else
                         {
-                            MessageBox.Show("Conexión exitosa!");
+                            string cadena = "mongodb://" + txtHOST.Text + ":" + duPUERTO.Text + "";
+                            mongo = new MongoClient(cadena);
+                            mongo.GetDatabase(cmbPRUEBA.Text);
+                            //db.GetCollection("prueba");
+                            if (mongo.Cluster.Description.State.ToString() == "Disconnected")
+                            {
+                                MessageBox.Show("Error al conectar", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Conexión exitosa!", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                            // db = mongo.GetDatabase("test");
+                            //MessageBox.Show(mongo.ToString());
                         }
-                       // db = mongo.GetDatabase("test");
-                       //MessageBox.Show(mongo.ToString());
 
                     }catch(MongoException error)
                     {
@@ -456,7 +467,6 @@ namespace ConexionAdministracionBD
                     {
                         MessageBox.Show("Error :" + error);
                     }
-
                     break;
                 //..................POSTGRES....................................................
                 case "1":
@@ -548,7 +558,7 @@ namespace ConexionAdministracionBD
                 case "4":
                     string cadena = "mongodb://" + txtHOST.Text + ":" + duPUERTO.Text + "";
                     mongo = new MongoClient(cadena);
-                    mongo.GetDatabase(cmbPRUEBA.Text);
+                    mongo.GetDatabase(cmbPRUEBA.Text);                       
                     if (mongo.Cluster.Description.State.ToString() == "Disconnected")  MessageBox.Show("Exito al conectar","Aviso de conexión",MessageBoxButtons.OKCancel,MessageBoxIcon.Information);
                     else
                     {

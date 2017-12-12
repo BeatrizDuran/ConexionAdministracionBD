@@ -32,7 +32,7 @@ namespace ConexionAdministracionBD
             SQLiteConnection sqlcon1 = AdminSesiones.sqlitecon;
             try
             {
-                string bd = "select * from sqlite_master where type = 'public'";
+                string bd = "select name from sqlite_master where type = 'table'";
                 SQLiteCommand comd = new SQLiteCommand();//comando
                 comd.CommandText = bd;
                 sqlcon1.Open();

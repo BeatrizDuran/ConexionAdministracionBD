@@ -35,9 +35,9 @@
             // 
             this.tvMysql.Location = new System.Drawing.Point(0, 0);
             this.tvMysql.Name = "tvMysql";
-            this.tvMysql.Size = new System.Drawing.Size(195, 340);
+            this.tvMysql.Size = new System.Drawing.Size(196, 310);
             this.tvMysql.TabIndex = 3;
-            this.tvMysql.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvBASEDATOS_AfterSelect);
+            this.tvMysql.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvMysql_AfterSelect);
             // 
             // frmMySql
             // 
